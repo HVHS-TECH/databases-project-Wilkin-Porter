@@ -73,10 +73,10 @@ let indicatorNone;
 // Loads assets before setup() is called
 /*****************************************************************************************************/
 function preload() {
-	indicatorHigh = loadImage('vacuumingSimulator/assets/indicatorHigh.png');
-	indicatorMedium = loadImage('vacuumingSimulator/assets/indicatorMedium.png');
-	indicatorLow = loadImage('vacuumingSimulator/assets/indicatorLow.png');
-	indicatorNone = loadImage('vacuumingSimulator/assets/indicatorNone.png');
+	indicatorHigh = loadImage('assets/indicatorHigh.png');
+	indicatorMedium = loadImage('assets/indicatorMedium.png');
+	indicatorLow = loadImage('assets/indicatorLow.png');
+	indicatorNone = loadImage('assets/indicatorNone.png');
 }
 
 

@@ -70,6 +70,7 @@ var player;
 var screenSelector = "start";
 
 var obstacles;
+
 /*******************************************************/
 // setup()
 /*******************************************************/
@@ -81,19 +82,6 @@ function setup() {
 	floor = new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 4, 's');
 	floor.color = color("black");
 	world.gravity.y = 80;
-
-	document.addEventListener("keydown",
-		function (event) {
-			if (screenSelector == "start" || screenSelector == "end") {
-				screenSelector = "game"
-				resetGame();
-			} else {
-				if (player.y > 184) {// 184 - found from testing - floor level
-					player.vel.y = -20;
-				}
-			}
-		});
-
 }
 
 /*******************************************************/
@@ -110,6 +98,17 @@ function draw() {
 		text("wrong screen - you shouldnt get here", 50, 50);
 		console.log("wrong screen - you shouldnt get here")
 	}
+
+	if (kb.pressing('up') || kb.pressing('space')) {
+		if (screenSelector == "start" || screenSelector == "end") {
+			screenSelector = "game"
+			resetGame();
+		} else {
+			if (player.y > 184) {// 184 - found from testing - floor level
+				player.vel.y = -20;
+			}
+		}
+	};
 }
 
 function newObstacle() {
@@ -142,7 +141,7 @@ function gameScreen() {
 	score++;
 	if (frameCount > nextSpawn) {
 		newObstacle();
-		nextSpawn = frameCount + random(10, 100);
+		nextSpawn = frameCount + random(30, 100);
 	}
 	textSize(32);
 	fill(255);
@@ -168,6 +167,7 @@ function endScreen() {
 
 function resetGame() {
 	player = new Sprite(PLAYER_WIDTH * 1.2, SCREEN_HEIGHT / 2, PLAYER_WIDTH, PLAYER_HEIGHT, 'd');
+	player.bounciness = 0;
 	player.color = color("purple");
 	player.collides(obstacles, endGame);
 	score = 0;
