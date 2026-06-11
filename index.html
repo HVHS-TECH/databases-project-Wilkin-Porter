@@ -6,10 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--<link rel="icon" type="image/x-icon" href="assets/icon.png">-->
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+    <script src="firebase/setup.js"></script>
+	<script src="firebase/io.js"></script>
 </head>
 
 <body>
+
+    <button id="loginButton" onclick="fb_authenticate()">Login with Google</button><br>
+	<button id="logoutButton" onclick="fb_logout()">Logout</button><br>
+
+    <h2>Login Status:</h2><br>
+	<p id="loginInformation">Not Logged In</p><br>
+
     <a href="vacuumingSimulator/vacuumingSimulator.html">Play Vacuuming Simulator!</a><br>
 	<a href="geoDash/geoDash.html">Play the silly default game we have to have!</a>
+
+    <script src="firebase/script.js"></script>
 </body>
 </html>
