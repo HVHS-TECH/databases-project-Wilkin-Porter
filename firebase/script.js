@@ -1,6 +1,7 @@
 const LOGIN_INFORMATION = document.getElementById("loginInformation");
 const LOGIN_BUTTON = document.getElementById("loginButton");
 const LOGOUT_BUTTON = document.getElementById("logoutButton");
+const PROFILE_IMAGE = document.getElementById("profileImage");
 loginButtonDisplay('show');
 
 function displayLoginInformation() {
@@ -11,14 +12,17 @@ function displayLoginInformation() {
     } else {
         //console.log('Logged in as user: ' + fb_userInformation['displayName'] + '. Full user details:');
         //console.log(fb_userInformation);
-        LOGIN_INFORMATION.style.color = '#145043';
+        LOGIN_INFORMATION.style.color = 'black';
         LOGIN_INFORMATION.textContent = 'Logged in as user: ' + fb_userInformation['displayName'];
+        PROFILE_IMAGE.src = fb_userInformation['photoURL'];
+        PROFILE_IMAGE.hidden = false;
     }
 }
 
 function removeLoginInformation() {
     console.log('User Logged Out');
     LOGIN_INFORMATION.innerHTML = 'Not Logged In';
+    PROFILE_IMAGE.hidden = true;
 }
 
 function loginButtonDisplay(mode) {
