@@ -1,56 +1,43 @@
 let logout;
-let waitingForDetails = true;
 let globalUserInformation;
 let authenticationListener;
 
-function fb_login() {
-    logout = false;
-    authenticationListener = firebase.auth().onAuthStateChanged(fb_checkLoginState)
+function fb_authenticationListener() {
+    loginButtonDisplay('show');
+    authenticationListener = firebase.auth().onAuthStateChanged(fb_checkLoginState);
 }
 
-function fb_checkLoginState(localUserInformation) {
+function fb_login() {
+    logout = false;
+    fb_loginPopup();
+}
+
+function fb_checkLoginState(_localUserInformation) {
     if (logout == true) {
         return;
     }
-    if (localUserInformation) {
-        globalUserInformation = localUserInformation;
-        firebase.database().ref('/userdata').child(globalUserInformation['uid']).once('value', fb_checkExistingData, fb_error);
+    if (_localUserInformation) {
+        globalUserInformation = _localUserInformation;
+        sessionStorage.setItem('sessionUserInformation', JSON.stringify(_localUserInformation));
+        firebase.database().ref('/userdata').child(_localUserInformation['uid']).once('value', fb_writeGoogleInformation, fb_error);
     } else {
-        fb_loginPopup();
+        loginButtonDisplay('show');
     }
 }
 
-function fb_checkExistingData(firebaseUserInformation) {
-    // If local name is different from the name stored in firebse, update the firebase name with the local name
-    if (firebaseUserInformation.val()['googleName'] != globalUserInformation['displayName']) {
-        firebase.database().ref('userdata/' + globalUserInformation['uid']).update({googleName: globalUserInformation['displayName']});
-        //console.log("updated name");
-    } else {
-        //console.log("didn't update name");
-    }
+function fb_writeGoogleInformation(_firebaseUserInformation) {
+    firebase.database().ref('userdata/' + globalUserInformation['uid']).update({
+        googleName: globalUserInformation['displayName'],
+        googleEmail: globalUserInformation['email'],
+        googleProfileURL: globalUserInformation['photoURL']
+    });
 
-    // If local email is different from the email stored in firebse, update the firebase email with the local email
-    if (firebaseUserInformation.val()['googleEmail'] != globalUserInformation['email']) {
-        firebase.database().ref('userdata/' + globalUserInformation['uid']).update({googleEmail: globalUserInformation['email']});
-        //console.log("updated email");
-    } else {
-        //console.log("didn't update email");
-    }
-
-    // If local profile URL is different from the profile URL stored in firebse, update the firebase profile URL with the local profile URL
-    if (firebaseUserInformation.val()['googleProfileURL'] != globalUserInformation['photoURL']) {
-        firebase.database().ref('userdata/' + globalUserInformation['uid']).update({googleProfileURL: globalUserInformation['photoURL']});
-        //console.log("updated profile url");
-    } else {
-        //console.log("didn't update profile email");
-    }
-
-    if (('formName' in firebaseUserInformation.val()) == true) {
-        console.log("form name exists");
-        displayLoginInformation(firebaseUserInformation.val()['formName'], firebaseUserInformation.val()['googleProfileURL']);
+    if (('formName' in _firebaseUserInformation.val()) == true && ('formAge' in _firebaseUserInformation.val()) == true) {
+        //console.log("User details exist in Firebase");
+        displayLoginInformation(_firebaseUserInformation.val()['formName'], _firebaseUserInformation.val()['googleProfileURL']);
         loginButtonDisplay('hide');
     } else {
-        console.log("form name doesn't exist");
+        //console.log("User details don't exist in Firebase, redirecting to details page");
         window.location.href = "details.html";
     }
 }
@@ -68,19 +55,16 @@ function fb_logout() {
 }
 
 function fb_error(){
-    console.error('something went wrong')
+    console.error("An error occured while trying to access Firebase.\nThis could be because you don't have permission to access the location, or the location is incorrect.");
 }
 
-
-/*
-firebase.database().ref('userdata').update({
-    [localUserInformation['uid']]: {
-        userName: localUserInformation['displayName'],
-        email: localUserInformation['email'],
-        profileURL: localUserInformation['photoURL']
+// General Write:
+function fb_write(_location, _key, _data, _mode) {
+    if (_mode == "set") {
+        firebase.database().ref(_location).set({[_key]: _data});
+    } else if (_mode == "update") {
+        firebase.database().ref(_location).update({[_key]: _data});
+    } else {
+        console.error("fb_write is is being called with something other than 'set' or 'update'");
     }
-});
-globalUserInformation = localUserInformation;
-displayLoginInformation();
-loginButtonDisplay('hide');
-*/
+}

@@ -20,13 +20,19 @@
     <h4>You don't have any account details, please save your details to unlock full functionality!</h4>
 
     <form id="form">
-		<label for="name">What would you like to be called?</label>
+		<label for="name">What would you like to be called? (This may be shared publicly)</label>
 		<p id="nameError"></p>
 		<input type="text" id="name" name="name" required />
         <br><br>
-		<label for="age">How old are you?</label>
+		<label for="age">How old are you? (This will not be shared with anyone)</label>
 		<p id="ageError"></p>
-		<input type="number" id="age" name="fruitQuantity" required />
-	</form>
+		<input type="number" id="age" name="age" required />
+	</form><br>
+
+	<button onclick="checkForm()">Submit</button><br>
+	
+	<p id="loginError"></p>
+
+	<script src="firebase/script.js"></script>
 </body>
 </html>

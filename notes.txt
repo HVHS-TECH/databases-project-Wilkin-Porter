@@ -1,1 +1,20 @@
 restructure html or load new page?
+
+Types of userInformation: (Small to large scope)
+1. localUserInformation                         - Used as input variables in various functions.
+2. firebaseUserInformation                      - Only used in fb_checkExistingData() as the input variable
+3. globalUserInformation                        - Only used in io.js, as it will be deleted on reload or navigation
+4. sessionUserInformation (Session Storage)     - Saved to session storage temporarily not deleted on reload or navigation
+
+
+
+firebase.database().ref('userdata').update({
+    [localUserInformation['uid']]: {
+        userName: localUserInformation['displayName'],
+        email: localUserInformation['email'],
+        profileURL: localUserInformation['photoURL']
+    }
+});
+globalUserInformation = localUserInformation;
+displayLoginInformation();
+loginButtonDisplay('hide');

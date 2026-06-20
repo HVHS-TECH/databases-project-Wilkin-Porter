@@ -14,7 +14,7 @@
     <script src="firebase/setup.js"></script>
 	<script src="firebase/io.js"></script>
 </head>
-<body>
+<body onload="fb_authenticationListener()">
     <h1>Wilix Games</h1><br>
     
     <button id="loginButton" onclick="fb_login()">Login or Sign up</button>
