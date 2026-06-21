@@ -41,14 +41,14 @@ body {
         text-decoration: none;
         color: black;
 
-        background: #e0e0e0;
+        background: #b1b1b1;
         border-radius: 8px;
 
         transition: background 0.2s ease;
     }
 
     a:hover {
-        background: #bdbdbd;
+        background: #646464;
     }
 
     .highscores {
@@ -75,8 +75,6 @@ body {
 
     border-radius: 20px;
     background: lightgray;
-
-    
 }
 
 .loginElements {
@@ -91,14 +89,14 @@ body {
         text-decoration: none;
         color: black;
 
-        background: #e0e0e0;
+        background: #b1b1b1;
         border-radius: 8px;
 
         transition: background 0.2s ease;
     }
 
     button:hover {
-        background: #bdbdbd;
+        background: #646464;
     }
 
     #profileImage {

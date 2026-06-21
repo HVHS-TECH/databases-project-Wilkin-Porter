@@ -1,6 +1,12 @@
 let formInputName;
 let formInputAge;
 
+function initialiseIndex() {
+    fb_authenticationListener();
+    firebase.database().ref("/").child("game1").orderByChild("highscore").limitToLast(3).once('value', displayVacuumingSimulatorHighscoreInformation, fb_error);
+    //firebase.database().ref("/").child("game1").orderByChild("highscore").limitToLast(3).once('value', displayVacuumingSimulatorHighscoreInformation, fb_error);
+}
+
 function displayLoginInformation(_formName, _googleProfileURL) {
     const LOGIN_INFORMATION = document.getElementById("loginInformation");
     const PROFILE_IMAGE = document.getElementById("profileImage");
@@ -9,10 +15,8 @@ function displayLoginInformation(_formName, _googleProfileURL) {
     LOGIN_INFORMATION.textContent = 'Logged in as ' + _formName;
     if (_googleProfileURL == undefined) {
         PROFILE_IMAGE.src = "../assets/unknownProfile.png";
-        //PROFILE_IMAGE.hidden = false;
     } else {
         PROFILE_IMAGE.src = _googleProfileURL;
-        //PROFILE_IMAGE.hidden = false;
     }
     
 }
@@ -23,11 +27,9 @@ function removeLoginInformation() {
 
     LOGIN_INFORMATION.innerHTML = 'Not Logged In';
     PROFILE_IMAGE.src = "../assets/unknownProfile.png";
-    //PROFILE_IMAGE.hidden = true;
 }
 
 function loginButtonDisplay(_mode) {
-    // Initialise elements
     const LOGIN_BUTTON = document.getElementById("loginButton");
     const LOGOUT_BUTTON = document.getElementById("logoutButton");
     
@@ -155,4 +157,22 @@ function checkForm() {
     formInputAge = Number(FORM_INPUT_AGE);
 
     firebase.database().ref("/userdata").child(localUserInformation['uid']).once('value', writeFormData, fb_error);
+}
+
+function displayVacuumingSimulatorHighscoreInformation(temp) {
+    const VACUUMING_SIMULATOR_1 = document.getElementById("vaccumingSimulator1");
+    const VACUUMING_SIMULATOR_2 = document.getElementById("vaccumingSimulator2");
+    const VACUUMING_SIMULATOR_3 = document.getElementById("vaccumingSimulator3");
+
+    temp.forEach(tempfunc);
+}
+
+function tempfunc(temp) {
+    console.log('user ' + temp.val()['formName'] + ' has a score of ' + temp.val()['highscore']);
+}
+
+function displayGeoDashHighscoreInformation() {
+    const GEODASH_1 = document.getElementById("geoDash1");
+    const GEODASH_2 = document.getElementById("geoDash2");
+    const GEODASH_3 = document.getElementById("geoDash3");
 }
