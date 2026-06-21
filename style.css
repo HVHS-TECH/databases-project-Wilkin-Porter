@@ -1,3 +1,113 @@
+body {
+    display: block;
+    justify-content: center;
+    align-items: center; 
+}
+
+.title {
+    font-size: 100px;
+    text-align: center;
+    margin-top: 200px;
+    margin-bottom: 200px;
+}
+
+.gameBox {
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 1300px;
+
+    margin: 0 auto;
+}
+
+.game {
+    border-radius: 20px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background: lightgray;
+    padding: 20px;
+
+    a {
+        width: 200px;
+        text-align: center;
+        display: inline-block;
+
+        padding: 12px 18px;
+        text-decoration: none;
+        color: black;
+
+        background: #e0e0e0;
+        border-radius: 8px;
+
+        transition: background 0.2s ease;
+    }
+
+    a:hover {
+        background: #bdbdbd;
+    }
+
+    .highscores {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
+
+.loginBox {
+    padding: 10px;
+    border-radius: 20px;
+    display: block;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+
+    border-radius: 20px;
+    background: lightgray;
+
+    
+}
+
+.loginElements {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    button {
+        border: 0px;
+        padding: 12px 18px;
+        text-decoration: none;
+        color: black;
+
+        background: #e0e0e0;
+        border-radius: 8px;
+
+        transition: background 0.2s ease;
+    }
+
+    button:hover {
+        background: #bdbdbd;
+    }
+
+    #profileImage {
+        width: 80px;
+        height: auto;
+        border-radius: 50%;
+    }
+}
+
 #nameError {
 	color: red;
 }

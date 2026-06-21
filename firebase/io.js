@@ -32,13 +32,16 @@ function fb_writeGoogleInformation(_firebaseUserInformation) {
         googleProfileURL: globalUserInformation['photoURL']
     });
 
-    if (('formName' in _firebaseUserInformation.val()) == true && ('formAge' in _firebaseUserInformation.val()) == true) {
-        //console.log("User details exist in Firebase");
+    if (_firebaseUserInformation.val() == null) {
+        // No UID exists for user so neither can form details, so redirect to details page
+        window.location.href = "details.html";
+    } else if (('formName' in _firebaseUserInformation.val()) == false || ('formAge' in _firebaseUserInformation.val()) == false) {
+        // Either form age, form name or both don't exist, so redirect to details page
+        window.location.href = "details.html";
+    } else {
+        // Both form age and form name exist, so log user in.
         displayLoginInformation(_firebaseUserInformation.val()['formName'], _firebaseUserInformation.val()['googleProfileURL']);
         loginButtonDisplay('hide');
-    } else {
-        //console.log("User details don't exist in Firebase, redirecting to details page");
-        window.location.href = "details.html";
     }
 }
 

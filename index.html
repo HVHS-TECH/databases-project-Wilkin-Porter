@@ -15,18 +15,48 @@
 	<script src="firebase/io.js"></script>
 </head>
 <body onload="fb_authenticationListener()">
-    <h1>Wilix Games</h1><br>
+    <h1 class="title">Wilix Games</h1>
+
+    <div class="gameBox">
+        <div class="game">
+            <h1>Vacuuming Simulator</h1>
+            <a href="vacuumingSimulator/vacuumingSimulator.html">Play!</a>
+            <h3>Highscores:</h3>
+            <ol class="highscores">
+                <li id="vacuumingSimulator1"></li>
+                <li id="vacuumingSimulator2"></li>
+                <li id="vacuumingSimulator3"></li>
+            </ol>
+        </div>
+        <div class="game">
+            <h1>Geodash</h1>
+            <a href="geoDash/geoDash.html">Play!</a>
+            <h3>Highscores:</h3>
+            <ol class="highscores">
+                <li id="geoDash1"></li>
+                <li id="geoDash2"></li>
+                <li id="geoDash3"></li>
+            </ol>
+        </div>
+    </div>  
+
+
+
+    <div class="loginBox">
+        <div class="loginElements">
+            <img id="profileImage" src="assets/unknownProfile.png">
+        </div>
     
-    <button id="loginButton" onclick="fb_login()">Login or Sign up</button>
-	<button id="logoutButton" onclick="fb_logout()">Logout</button><br>
+        <div class="loginElements">
+            <p id="loginInformation">Not Logged In</p>
+            
+            <button id="loginButton" onclick="fb_login()">Login or Sign up</button>
+            <button id="logoutButton" onclick="fb_logout()">Logout</button>
+        </div>
 
-    <h2>Login Status:</h2><br>
-	<p id="loginInformation">Not Logged In</p>
+        
+    </div>
 
-    <img id="profileImage" src=""><br><br>
-
-    <a href="vacuumingSimulator/vacuumingSimulator.html">Play Vacuuming Simulator!</a><br>
-	<a href="geoDash/geoDash.html">Play the default game we have to have!</a>
 
     <script src="firebase/script.js"></script>
 </body>

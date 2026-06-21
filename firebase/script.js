@@ -7,8 +7,14 @@ function displayLoginInformation(_formName, _googleProfileURL) {
 
     LOGIN_INFORMATION.style.color = 'black';
     LOGIN_INFORMATION.textContent = 'Logged in as ' + _formName;
-    PROFILE_IMAGE.src = _googleProfileURL;
-    PROFILE_IMAGE.hidden = false;
+    if (_googleProfileURL == undefined) {
+        PROFILE_IMAGE.src = "../assets/unknownProfile.png";
+        //PROFILE_IMAGE.hidden = false;
+    } else {
+        PROFILE_IMAGE.src = _googleProfileURL;
+        //PROFILE_IMAGE.hidden = false;
+    }
+    
 }
 
 function removeLoginInformation() {
@@ -16,37 +22,42 @@ function removeLoginInformation() {
     const PROFILE_IMAGE = document.getElementById("profileImage");
 
     LOGIN_INFORMATION.innerHTML = 'Not Logged In';
-    PROFILE_IMAGE.hidden = true;
+    PROFILE_IMAGE.src = "../assets/unknownProfile.png";
+    //PROFILE_IMAGE.hidden = true;
 }
 
-function loginButtonDisplay(mode) {
+function loginButtonDisplay(_mode) {
     // Initialise elements
     const LOGIN_BUTTON = document.getElementById("loginButton");
     const LOGOUT_BUTTON = document.getElementById("logoutButton");
     
     if (!LOGIN_BUTTON) {
         console.error("LOGIN_BUTTON Doesn't exist");
-        return;
-    }
-
-    if (!LOGOUT_BUTTON) {
+    } else if (!LOGOUT_BUTTON) {
         console.error("LOGOUT_BUTTON Doesn't exist");
-        return;
-    }
-
-    if (mode == 'hide') {
+    } else if (_mode == 'hide') {
         LOGIN_BUTTON.hidden = true;
         LOGOUT_BUTTON.hidden = false;
-        return;
-    } 
-
-    if (mode == 'show') {
+    } else if (_mode == 'show') {
         LOGIN_BUTTON.hidden = false;
         LOGOUT_BUTTON.hidden = true;
-        return;
+    } else {
+        console.error("loginButtonDisplay() is being called with something other than 'show' or 'hide'");
     }
+}
 
-    console.error("loginButtonDisplay() is being called with something other than 'show' or 'hide'");
+function returnButtonDisplay(_mode) {
+    const RETURN_BUTTON = document.getElementById("returnButton");
+
+    if (!RETURN_BUTTON) {
+        console.error("RETURN_BUTTON Doesn't exist");
+    } else if (_mode == "hide") {
+        RETURN_BUTTON.hidden = true;
+    } else if (_mode == "show") {
+        RETURN_BUTTON.hidden = false;
+    } else {
+        console.error("returnButtonDisplay() is being called with something other than 'show' or 'hide'");
+    }
 }
 
 function writeFormData(_firebaseUserInformation) {
@@ -56,6 +67,12 @@ function writeFormData(_firebaseUserInformation) {
     let localUserInformation = JSON.parse(sessionStorage.getItem('sessionUserInformation'));
 
     const LOGIN_ERROR = document.getElementById("loginError");
+
+    if (_firebaseUserInformation.val() == null) {
+        LOGIN_ERROR.textContent = "You are not logged in, cannot save info to database.";
+        returnButtonDisplay('show');
+        return;
+    }
 
     if (('formName' in _firebaseUserInformation.val()) == true) {
         nameExists = true;
@@ -67,6 +84,7 @@ function writeFormData(_firebaseUserInformation) {
 
     if (nameExists == true && ageExists == true) {
         LOGIN_ERROR.textContent = "Your details have already been saved. They haven't been updated.";
+        returnButtonDisplay('show');
         return;
     }
 
@@ -83,7 +101,11 @@ function writeFormData(_firebaseUserInformation) {
         LOGIN_ERROR.style.color = "black";
         LOGIN_ERROR.textContent = "You already have an age saved, it hasn't been updated.";
     }
+
+    LOGIN_ERROR.style.color = "black";
+    LOGIN_ERROR.textContent = "Details Saved.";
     
+    returnButtonDisplay('show');
 }
 
 function checkForm() {

@@ -14,7 +14,7 @@
     <script src="firebase/setup.js"></script>
 	<script src="firebase/io.js"></script>
 </head>
-<body>
+<body onload="returnButtonDisplay('hide')">
     <h1>Create Account</h1>
 
     <h4>You don't have any account details, please save your details to unlock full functionality!</h4>
@@ -32,6 +32,8 @@
 	<button onclick="checkForm()">Submit</button><br>
 	
 	<p id="loginError"></p>
+
+	<a id="returnButton" href="index.html">Return to home page</a>
 
 	<script src="firebase/script.js"></script>
 </body>
