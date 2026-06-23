@@ -3,8 +3,8 @@ let formInputAge;
 
 function initialiseIndex() {
     fb_authenticationListener();
-    firebase.database().ref("/").child("game1").orderByChild("highscore").limitToLast(3).once('value', displayVacuumingSimulatorHighscoreInformation, fb_error);
-    //firebase.database().ref("/").child("game1").orderByChild("highscore").limitToLast(3).once('value', displayVacuumingSimulatorHighscoreInformation, fb_error);
+    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("highScore").limitToLast(3).once('value', displayVacuumingSimulatorHighscoreInformation, fb_error);
+    firebase.database().ref("/").child("geoDash").orderByChild("highScore").limitToLast(3).once('value', displayGeoDashHighscoreInformation, fb_error);
 }
 
 function displayLoginInformation(_formName, _googleProfileURL) {
@@ -91,14 +91,14 @@ function writeFormData(_firebaseUserInformation) {
     }
 
     if (nameExists == false) {
-        fb_write("/userdata/" + localUserInformation['uid'], "formName", formInputName, "update");
+        fb_write("/userData/" + localUserInformation['uid'], "formName", formInputName, "update");
     } else {
         LOGIN_ERROR.style.color = "black";
         LOGIN_ERROR.textContent = "You already have a name saved, it hasn't been updated.";
     }
     
     if (ageExists == false) {
-        fb_write("/userdata/" + localUserInformation['uid'], "formAge", formInputAge, "update");
+        fb_write("/userData/" + localUserInformation['uid'], "formAge", formInputAge, "update");
     } else {
         LOGIN_ERROR.style.color = "black";
         LOGIN_ERROR.textContent = "You already have an age saved, it hasn't been updated.";
@@ -156,23 +156,55 @@ function checkForm() {
     formInputName = FORM_INPUT_NAME;
     formInputAge = Number(FORM_INPUT_AGE);
 
-    firebase.database().ref("/userdata").child(localUserInformation['uid']).once('value', writeFormData, fb_error);
+    firebase.database().ref("/userData").child(localUserInformation['uid']).once('value', writeFormData, fb_error);
 }
 
-function displayVacuumingSimulatorHighscoreInformation(temp) {
-    const VACUUMING_SIMULATOR_1 = document.getElementById("vaccumingSimulator1");
-    const VACUUMING_SIMULATOR_2 = document.getElementById("vaccumingSimulator2");
-    const VACUUMING_SIMULATOR_3 = document.getElementById("vaccumingSimulator3");
+function displayVacuumingSimulatorHighscoreInformation(_highScoreObject) {
+    if (_highScoreObject == null) {
+        console.error("displayVacuumingSimulatorHighScoreInformation input parameter doesn't exist");
+        return;
+    }
 
-    temp.forEach(tempfunc);
+    highScoreArray = Object.entries(_highScoreObject.val())
+    //highScoreArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
+
+    for (let i = 1; i <= 3; i++) {
+        if (document.getElementById("vacuumingSimulator" + i) == null) {
+            console.error("HTML element vacuumingSimulator" + i + " doesn't exist");
+            return;
+        }
+            
+        if (highScoreArray[3 - i] != undefined) {
+            if (highScoreArray[3 - i][1].highScore == null || highScoreArray[3 - i][1].formName == null) {
+                console.error("Either formName or highScore doesn't exist for position " + i + " in Vacuuming Simulator array");
+                return;
+            }
+            document.getElementById("vacuumingSimulator" + i).textContent = highScoreArray[3 - i][1].highScore + " By " + highScoreArray[3 - i][1].formName;
+        }         
+    }
 }
 
-function tempfunc(temp) {
-    console.log('user ' + temp.val()['formName'] + ' has a score of ' + temp.val()['highscore']);
-}
+function displayGeoDashHighscoreInformation(_highScoreObject) {
+    if (_highScoreObject == null) {
+        console.error("displayGeoDashHighscoreInformation input parameter doesn't exist");
+        return;
+    }
 
-function displayGeoDashHighscoreInformation() {
-    const GEODASH_1 = document.getElementById("geoDash1");
-    const GEODASH_2 = document.getElementById("geoDash2");
-    const GEODASH_3 = document.getElementById("geoDash3");
+    highScoreArray = Object.entries(_highScoreObject.val())
+    highScoreArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
+
+    for (let i = 1; i <= 3; i++) {
+        if (document.getElementById("geoDash" + i) == null) {
+            console.error("HTML element geoDash" + i + " doesn't exist");
+            return;
+        }
+        
+        if (highScoreArray[3 - i] != undefined) {
+            if (highScoreArray[3 - i][1].highScore == null || highScoreArray[3 - i][1].formName == null) {
+                console.error("Either formName or highScore doesn't exist for position " + i + " in geoDash array");
+                return;
+            }
+            document.getElementById("geoDash" + i).textContent = highScoreArray[3 - i][1].highScore + " By " + highScoreArray[3 - i][1].formName;
+        }         
+    }
 }

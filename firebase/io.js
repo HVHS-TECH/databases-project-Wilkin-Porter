@@ -19,14 +19,14 @@ function fb_checkLoginState(_localUserInformation) {
     if (_localUserInformation) {
         globalUserInformation = _localUserInformation;
         sessionStorage.setItem('sessionUserInformation', JSON.stringify(_localUserInformation));
-        firebase.database().ref('/userdata').child(_localUserInformation['uid']).once('value', fb_writeGoogleInformation, fb_error);
+        firebase.database().ref('/userData').child(_localUserInformation['uid']).once('value', fb_writeGoogleInformation, fb_error);
     } else {
         loginButtonDisplay('show');
     }
 }
 
 function fb_writeGoogleInformation(_firebaseUserInformation) {
-    firebase.database().ref('userdata/' + globalUserInformation['uid']).update({
+    firebase.database().ref('userData/' + globalUserInformation['uid']).update({
         googleName: globalUserInformation['displayName'],
         googleEmail: globalUserInformation['email'],
         googleProfileURL: globalUserInformation['photoURL']
@@ -69,5 +69,75 @@ function fb_write(_location, _key, _data, _mode) {
         firebase.database().ref(_location).update({[_key]: _data});
     } else {
         console.error("fb_write is is being called with something other than 'set' or 'update'");
+    }
+}
+
+async function fb_writeGeoDash(_score) {
+    let localUserInformation = JSON.parse(sessionStorage.getItem("sessionUserInformation")); // could change to const
+    
+    if (localUserInformation == null) {
+        console.log("User not logged in, not saving their score"); // remove for final idk
+        return;
+    }
+
+    const GEODASH_HIGH_SCORE_DATA = await firebase.database().ref("/geoDash/" + localUserInformation["uid"]).once('value');
+
+    if (GEODASH_HIGH_SCORE_DATA.val() == null) {
+        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
+
+        firebase.database().ref("/geoDash/" + localUserInformation["uid"]).update({
+            formName: FORM_NAME.val()["formName"],
+            highScore: _score
+        });
+        
+        return;
+    }
+
+    if (_score > GEODASH_HIGH_SCORE_DATA.val()["highScore"]) {
+        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
+
+        firebase.database().ref("/geoDash/" + localUserInformation["uid"]).update({
+            formName: FORM_NAME.val()["formName"],
+            highScore: _score
+        });
+        
+        console.log("Updated this user's high score, it is now " + score); // remove for final idk
+    } else {
+        console.log("Didn't update this user's high score");
+    }
+}
+
+async function fb_writeVacuumingSimulator(_score) {
+    let localUserInformation = JSON.parse(sessionStorage.getItem("sessionUserInformation")); // could change to const
+    
+    if (localUserInformation == null) {
+        console.log("User not logged in, not saving their score"); // remove for final idk
+        return;
+    }
+
+    const VACUUMING_SIMULATOR_HIGH_SCORE_DATA = await firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).once('value');
+
+    if (VACUUMING_SIMULATOR_HIGH_SCORE_DATA.val() == null) {
+        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
+
+        firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).update({
+            formName: FORM_NAME.val()["formName"],
+            highScore: _score
+        });
+        
+        return;
+    }
+
+    if (_score > VACUUMING_SIMULATOR_HIGH_SCORE_DATA.val()["highScore"]) {
+        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
+
+        firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).update({
+            formName: FORM_NAME.val()["formName"],
+            highScore: _score
+        });
+        
+        console.log("Updated this user's high score, it is now " + score); // remove for final idk
+    } else {
+        console.log("Didn't update this user's high score");
     }
 }

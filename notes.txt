@@ -18,3 +18,8 @@ firebase.database().ref('userdata').update({
 globalUserInformation = localUserInformation;
 displayLoginInformation();
 loginButtonDisplay('hide');
+
+
+shii breaks if highscores have the same value but cbb when will that ever happen right??
+
+how should i work the local sotrage for vacuuming simulator?
