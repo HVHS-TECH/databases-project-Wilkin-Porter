@@ -3,8 +3,8 @@ let formInputAge;
 
 function initialiseIndex() {
     fb_authenticationListener();
-    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("highScore").limitToLast(3).once('value', displayVacuumingSimulatorHighscoreInformation, fb_error);
-    firebase.database().ref("/").child("geoDash").orderByChild("highScore").limitToLast(3).once('value', displayGeoDashHighscoreInformation, fb_error);
+    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("comparisonTime").limitToLast(3).once('value', displayVacuumingSimulatorTimeInformation, fb_error);
+    firebase.database().ref("/geoDash").orderByChild("highScore").limitToLast(3).once('value', displayGeoDashHighscoreInformation, fb_error);
 }
 
 function displayLoginInformation(_formName, _googleProfileURL) {
@@ -159,14 +159,19 @@ function checkForm() {
     firebase.database().ref("/userData").child(localUserInformation['uid']).once('value', writeFormData, fb_error);
 }
 
-function displayVacuumingSimulatorHighscoreInformation(_highScoreObject) {
-    if (_highScoreObject == null) {
+function displayVacuumingSimulatorTimeInformation(_timerObject) {
+    if (_timerObject == null) {
         console.error("displayVacuumingSimulatorHighScoreInformation input parameter doesn't exist");
         return;
     }
 
-    highScoreArray = Object.entries(_highScoreObject.val())
-    //highScoreArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
+    let timerArray = [];
+
+    _timerObject.forEach(function(_timerValue) {
+        timerArray.push(_timerValue.val())
+    });
+
+    //timerArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
 
     for (let i = 1; i <= 3; i++) {
         if (document.getElementById("vacuumingSimulator" + i) == null) {
@@ -174,12 +179,12 @@ function displayVacuumingSimulatorHighscoreInformation(_highScoreObject) {
             return;
         }
             
-        if (highScoreArray[3 - i] != undefined) {
-            if (highScoreArray[3 - i][1].highScore == null || highScoreArray[3 - i][1].formName == null) {
-                console.error("Either formName or highScore doesn't exist for position " + i + " in Vacuuming Simulator array");
+        if (timerArray[i - 1] != undefined) {
+            if (timerArray[i - 1].comparisonTime == null || timerArray[i - 1].displayTime == null || timerArray[i - 1].formName == null ) {
+                console.error("Either formName, comparisonTime or displayTime doesn't exist for position " + i + " in Vacuuming Simulator array");
                 return;
             }
-            document.getElementById("vacuumingSimulator" + i).textContent = highScoreArray[3 - i][1].highScore + " By " + highScoreArray[3 - i][1].formName;
+            document.getElementById("vacuumingSimulator" + i).textContent = timerArray[i - 1].displayTime + " By " + timerArray[i - 1].formName;
         }         
     }
 }
@@ -189,9 +194,43 @@ function displayGeoDashHighscoreInformation(_highScoreObject) {
         console.error("displayGeoDashHighscoreInformation input parameter doesn't exist");
         return;
     }
+    
+    let highScoreArray = [];
+
+    _highScoreObject.forEach(function(_highScoreValue) {
+        highScoreArray.push(_highScoreValue.val())
+    });
+
+    highScoreArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
+
+    for (let i = 1; i <= 3; i++) {
+        if (document.getElementById("geoDash" + i) == null) {
+            console.error("HTML element geoDash" + i + " doesn't exist");
+            return;
+        }
+
+        if (highScoreArray[i - 1] != undefined) {
+            if (highScoreArray[i - 1].highScore == undefined || highScoreArray[i - 1].formName == undefined) {
+                console.error("Either formName or highScore doesn't exist for position " + i + " in geoDash array");
+                return;
+            }
+            document.getElementById("geoDash" + i).textContent = highScoreArray[i - 1].highScore + " By " + highScoreArray[i - 1].formName;
+        }         
+    }
+}
+
+/*
+function displayGeoDashHighscoreInformation(_highScoreObject) {
+    if (_highScoreObject == null) {
+        console.error("displayGeoDashHighscoreInformation input parameter doesn't exist");
+        return;
+    }
 
     highScoreArray = Object.entries(_highScoreObject.val())
     highScoreArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
+
+    console.log(_highScoreObject.val())
+    console.log(highScoreArray)
 
     for (let i = 1; i <= 3; i++) {
         if (document.getElementById("geoDash" + i) == null) {
@@ -207,4 +246,4 @@ function displayGeoDashHighscoreInformation(_highScoreObject) {
             document.getElementById("geoDash" + i).textContent = highScoreArray[3 - i][1].highScore + " By " + highScoreArray[3 - i][1].formName;
         }         
     }
-}
+}*/

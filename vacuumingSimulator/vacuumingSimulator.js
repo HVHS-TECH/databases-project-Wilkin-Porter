@@ -21,7 +21,7 @@ let indicatorMode = 'boost';
 
 const PLAYER_MOVEMENT_SPEED = 4;
 const PLAYER_ROTATION_SPEED = 1.7;
-const DUST_TO_SPAWN = 1;
+const DUST_TO_SPAWN = 10000;
 const DUST_SIZE = 6;
 const DUST_MOVEMENT_SPEED = 0.4; // Lower number = faster
 const WALL_THICKNESS = 1;
@@ -619,6 +619,14 @@ function updateScoreBoxText() {
 		localStorage.setItem('bestTimeSecs', timerSecs);
 		localStorage.setItem('bestTimeTimer', timer);
 	}
+
+	// ********************************************************************************************************************* // Added lines for database update
+	if (timerMins < 1) {
+		fb_writeVacuumingSimulator(timer, timerSecs + 's'); 
+	} else {
+		fb_writeVacuumingSimulator(timer, timerMins + 'm ' + timerSecs + 's'); 
+	}
+	
 
 	// Displays the text in the box
 	if (parseInt(localStorage.getItem('bestTimeMins')) < 1) {

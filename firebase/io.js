@@ -73,6 +73,11 @@ function fb_write(_location, _key, _data, _mode) {
 }
 
 async function fb_writeGeoDash(_score) {
+    if (!_score) {
+        console.error("fb_writeGeoDash input parameter/s doesn't exist");
+        return;
+    }
+
     let localUserInformation = JSON.parse(sessionStorage.getItem("sessionUserInformation")); // could change to const
     
     if (localUserInformation == null) {
@@ -89,7 +94,9 @@ async function fb_writeGeoDash(_score) {
             formName: FORM_NAME.val()["formName"],
             highScore: _score
         });
-        
+
+        console.log("Set this user's high score, it is now " + _score); // remove for final idk
+
         return;
     }
 
@@ -101,13 +108,18 @@ async function fb_writeGeoDash(_score) {
             highScore: _score
         });
         
-        console.log("Updated this user's high score, it is now " + score); // remove for final idk
+        console.log("Updated this user's high score, it is now " + _score); // remove for final idk
     } else {
         console.log("Didn't update this user's high score");
     }
 }
 
-async function fb_writeVacuumingSimulator(_score) {
+async function fb_writeVacuumingSimulator(_timer, _data) {
+    if (!_timer || !_data) {
+        console.error("fb_writeVacuumingSimulator input parameter/s doesn't exist");
+        return;
+    }
+
     let localUserInformation = JSON.parse(sessionStorage.getItem("sessionUserInformation")); // could change to const
     
     if (localUserInformation == null) {
@@ -115,29 +127,33 @@ async function fb_writeVacuumingSimulator(_score) {
         return;
     }
 
-    const VACUUMING_SIMULATOR_HIGH_SCORE_DATA = await firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).once('value');
+    const VACUUMING_SIMULATOR_TIMER_DATA = await firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).once('value');
 
-    if (VACUUMING_SIMULATOR_HIGH_SCORE_DATA.val() == null) {
+    if (VACUUMING_SIMULATOR_TIMER_DATA.val() == null) {
         const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
 
         firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).update({
             formName: FORM_NAME.val()["formName"],
-            highScore: _score
+            comparisonTime: _timer,
+            displayTime: _data
         });
         
+        console.log("Set this user's time, it is now " + _data); // remove for final idk
+
         return;
     }
 
-    if (_score > VACUUMING_SIMULATOR_HIGH_SCORE_DATA.val()["highScore"]) {
+    if (_timer < VACUUMING_SIMULATOR_TIMER_DATA.val()["comparisonTime"]) {
         const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
 
         firebase.database().ref("/vacuumingSimulator/" + localUserInformation["uid"]).update({
             formName: FORM_NAME.val()["formName"],
-            highScore: _score
+            comparisonTime: _timer,
+            displayTime: _data
         });
         
-        console.log("Updated this user's high score, it is now " + score); // remove for final idk
+        console.log("Updated this user's time, it is now " + _data); // remove for final idk
     } else {
-        console.log("Didn't update this user's high score");
+        console.log("Didn't update this user's time");
     }
 }
