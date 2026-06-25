@@ -3,7 +3,7 @@ let formInputAge;
 
 function initialiseIndex() {
     fb_authenticationListener();
-    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("comparisonTime").limitToLast(3).once('value', displayVacuumingSimulatorTimeInformation, fb_error);
+    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("comparisonTime").limitToFirst(3).once('value', displayVacuumingSimulatorTimeInformation, fb_error);
     firebase.database().ref("/geoDash").orderByChild("highScore").limitToLast(3).once('value', displayGeoDashHighscoreInformation, fb_error);
 }
 
@@ -128,26 +128,38 @@ function checkForm() {
     }
 
     if (FORM_INPUT_NAME == "") {
-        NAME_ERROR.textContent = "Please Fill in this field";
+        NAME_ERROR.textContent = "Please Fill in This Field";
         return;
     } else if (FORM_INPUT_NAME.length > 40) {
-        NAME_ERROR.textContent = "Please Input Text Shorter than 40 Characters";
+        NAME_ERROR.textContent = "Please Input Text Shorter Than 40 Characters";
+        return;
+    } else if (
+        FORM_INPUT_NAME.includes("<") || 
+        FORM_INPUT_NAME.includes(">") ||
+        FORM_INPUT_NAME.includes("$") ||
+        FORM_INPUT_NAME.includes(".") ||
+        FORM_INPUT_NAME.includes("#") ||
+        FORM_INPUT_NAME.includes("/") ||
+        FORM_INPUT_NAME.includes("[") ||
+        FORM_INPUT_NAME.includes("]")
+    ) {
+        NAME_ERROR.textContent = "Certain Special Characters You Have Typed Are Not Supported, Please Remove Them";
         return;
     } else {
         NAME_ERROR.textContent = "";
     }
 
     if (FORM_INPUT_NAME == "") {
-        NAME_ERROR.textContent = "Please Fill in this field";
+        NAME_ERROR.textContent = "Please Fill in This Field";
         return;
     } else if (Number(FORM_INPUT_AGE) <= 0) {
-        AGE_ERROR.textContent = "Please input a real age (Must be greater than 0)";
+        AGE_ERROR.textContent = "Please Input a Real Age (Must be greater than 0)";
         return;
     } else if (Number(FORM_INPUT_AGE) < 13) {
-        AGE_ERROR.textContent = "You must be at least 13 years of age to use this site";
+        AGE_ERROR.textContent = "You Must be at Least 13 Years of Age to Use This Site";
         return;
     } else if (Number(FORM_INPUT_AGE) > 120) {
-        AGE_ERROR.textContent = "Please input a real age (Must be less than 120)";
+        AGE_ERROR.textContent = "Please Input a Real Age (Must be Less Than 120)";
         return;
     } else {
         AGE_ERROR.textContent = "";
@@ -218,32 +230,3 @@ function displayGeoDashHighscoreInformation(_highScoreObject) {
         }         
     }
 }
-
-/*
-function displayGeoDashHighscoreInformation(_highScoreObject) {
-    if (_highScoreObject == null) {
-        console.error("displayGeoDashHighscoreInformation input parameter doesn't exist");
-        return;
-    }
-
-    highScoreArray = Object.entries(_highScoreObject.val())
-    highScoreArray.reverse(); // Comment out for low - high Scores, add line for high - low scores
-
-    console.log(_highScoreObject.val())
-    console.log(highScoreArray)
-
-    for (let i = 1; i <= 3; i++) {
-        if (document.getElementById("geoDash" + i) == null) {
-            console.error("HTML element geoDash" + i + " doesn't exist");
-            return;
-        }
-        
-        if (highScoreArray[3 - i] != undefined) {
-            if (highScoreArray[3 - i][1].highScore == null || highScoreArray[3 - i][1].formName == null) {
-                console.error("Either formName or highScore doesn't exist for position " + i + " in geoDash array");
-                return;
-            }
-            document.getElementById("geoDash" + i).textContent = highScoreArray[3 - i][1].highScore + " By " + highScoreArray[3 - i][1].formName;
-        }         
-    }
-}*/
