@@ -3,8 +3,8 @@ let formInputAge;
 
 function initialiseIndex() {
     fb_authenticationListener();
-    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("comparisonTime").limitToFirst(3).once('value', displayVacuumingSimulatorTimeInformation, fb_error);
-    firebase.database().ref("/geoDash").orderByChild("highScore").limitToLast(3).once('value', displayGeoDashHighscoreInformation, fb_error);
+    firebase.database().ref("/").child("vacuumingSimulator").orderByChild("comparisonTime").limitToFirst(3).on('value', displayVacuumingSimulatorTimeInformation, fb_error);
+    firebase.database().ref("/geoDash").orderByChild("highScore").limitToLast(3).on('value', displayGeoDashHighscoreInformation, fb_error);
 }
 
 function displayLoginInformation(_formName, _googleProfileURL) {

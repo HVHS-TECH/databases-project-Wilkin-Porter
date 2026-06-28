@@ -5,3 +5,14 @@ Types of userInformation: (Small to large scope)
 4. sessionUserInformation (Session Storage)     - Saved to session storage temporarily not deleted on reload or navigation
 
 how should i work the local sotrage for vacuuming simulator?
+
+
+
+Example function comment:
+
+/*****************************************************************************************************/
+// functionName()
+// Parameter 1: Description
+// Called by function1() and function2()
+// Overall function description
+/*****************************************************************************************************/

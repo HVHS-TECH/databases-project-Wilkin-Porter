@@ -1,17 +1,48 @@
+/*****************************************************************************************************/
+// Firebase: io.js
+// Firebase script used mainly for database operations
+// Written by Wilkin Porter - Term 2 2026
+/*****************************************************************************************************/
+
+
+/*****************************************************************************************************/
+// Global Variables, Constants and Arrays
+/*****************************************************************************************************/
 let logout;
 let globalUserInformation;
-let authenticationListener;
 
+
+/*****************************************************************************************************/
+// fb_authenticationListener()
+// Called by initialiseIndex()
+// Displays login button, then creates a listener that detects changes in the firebase login 
+// information stored by the browser
+/*****************************************************************************************************/
 function fb_authenticationListener() {
     loginButtonDisplay('show');
-    authenticationListener = firebase.auth().onAuthStateChanged(fb_checkLoginState);
+    firebase.auth().onAuthStateChanged(fb_checkLoginState);
 }
 
+
+/*****************************************************************************************************/
+// fb_login()
+// Called by lo0gin button in index.html
+// Sets logout variable to false, then loads a popup to allow user to sign in to the site
+/*****************************************************************************************************/
 function fb_login() {
     logout = false;
-    fb_loginPopup();
+    let provider = new firebase.auth.GoogleAuthProvider();
+	firebase.auth().signInWithPopup(provider);
 }
 
+
+/*****************************************************************************************************/
+// fb_checkLoginState(parameter1)
+// Parameter 1: This is the local firebase data passed by the authenticationListener
+// Called by fb_authenticationListener()
+// If logout is true, (the user has pressed logout) the function does nothing, if not then it checks if
+// 
+/*****************************************************************************************************/
 function fb_checkLoginState(_localUserInformation) {
     if (logout == true) {
         return;
@@ -43,11 +74,6 @@ function fb_writeGoogleInformation(_firebaseUserInformation) {
         displayLoginInformation(_firebaseUserInformation.val()['formName'], _firebaseUserInformation.val()['googleProfileURL']);
         loginButtonDisplay('hide');
     }
-}
-
-function fb_loginPopup() {
-	let provider = new firebase.auth.GoogleAuthProvider();
-	firebase.auth().signInWithPopup(provider);
 }
 
 function fb_logout() {

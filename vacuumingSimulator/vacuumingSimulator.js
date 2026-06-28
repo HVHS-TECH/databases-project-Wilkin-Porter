@@ -751,8 +751,10 @@ function freeRoam() {
 
 	// Respawn dust
 	if (dustLeft == 0) {
+		initialising = true;
 		dustArray.length = 0;
 		spawnDust(DUST_TO_SPAWN);
+		initialising = false;
 	}
 
 	// Game end detection (exit button)
