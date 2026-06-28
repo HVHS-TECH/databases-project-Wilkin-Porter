@@ -41,7 +41,8 @@ function fb_login() {
 // Parameter 1: This is the local firebase data passed by the authenticationListener
 // Called by fb_authenticationListener()
 // If logout is true, (the user has pressed logout) the function does nothing, if not then it checks if
-// 
+// the local firebase data passed by the authenticationListener exists, if it does it saves the data to 
+// local storage for later later use, and calls fb_writeGoogleInformation
 /*****************************************************************************************************/
 function fb_checkLoginState(_localUserInformation) {
     if (logout == true) {
