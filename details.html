@@ -17,7 +17,7 @@
 <body onload="returnButtonDisplay('hide')">
     <h1>Create Account</h1>
 
-    <h4>You don't have any account details, please save your details to unlock full functionality!</h4>
+    <h4>You don't have some account details, please save your details to unlock full functionality!</h4>
 
     <form id="form">
 		<label for="name">What would you like to be called? (This may be shared publicly)</label>
@@ -27,11 +27,11 @@
 		<label for="age">How old are you? (This will not be shared with anyone)</label>
 		<p id="ageError"></p>
 		<input type="number" id="age" name="age" required />
-	</form><br>
+	</form>
 
-	<button onclick="checkForm()">Submit</button><br>
+	<button id="submitButton" onclick="checkForm()">Submit</button>
 	
-	<p id="loginError"></p>
+	<p id="loginError"></p><br>
 
 	<a id="returnButton" href="index.html">Return to home page</a>
 

@@ -11,8 +11,9 @@ how should i work the local sotrage for vacuuming simulator?
 Example function comment:
 
 /*****************************************************************************************************/
-// functionName()
+// functionName() - async
 // Parameter 1: Description
-// Called by function1() and function2()
+// Called by: functionName()
+// Calls: functionName()
 // Overall function description
 /*****************************************************************************************************/

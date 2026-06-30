@@ -1,7 +1,7 @@
 body {
     display: block;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 .title {
@@ -32,6 +32,11 @@ body {
     background: lightgray;
     padding: 20px;
 
+    .highscores {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
     a {
         width: 200px;
         text-align: center;
@@ -50,11 +55,6 @@ body {
     a:hover {
         background: #646464;
     }
-
-    .highscores {
-        margin-left: 100px;
-        margin-right: 100px;
-    }
 }
 
 .loginBox {
@@ -71,7 +71,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    
+
 
     border-radius: 20px;
     background: lightgray;
@@ -88,9 +88,8 @@ body {
         height: auto;
         border-radius: 50%;
     }
-}
 
-button {
+    button {
         border: 0px;
         padding: 12px 18px;
         text-decoration: none;
@@ -106,14 +105,52 @@ button {
         background: #646464;
     }
 
+}
+
+#submitButton {
+    border: 0px;
+    padding: 12px 18px;
+    text-decoration: none;
+    color: black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    background: #b1b1b1;
+    border-radius: 8px;
+
+    transition: background 0.2s ease;
+}
+
+#submitButton:hover {
+    background: #646464;
+}
+
+#returnButton {
+    width: 200px;
+    text-align: center;
+
+    padding: 12px 18px;
+    text-decoration: none;
+    color: black;
+
+    background: #b1b1b1;
+    border-radius: 8px;
+
+    transition: background 0.2s ease;
+}
+
+#returnButton:hover {
+    background: #646464;
+}
+
 #nameError {
-	color: red;
+    color: red;
 }
 
 #ageError {
-	color: red;
+    color: red;
 }
 
 #loginError {
-	color: red;
+    color: red;
 }
