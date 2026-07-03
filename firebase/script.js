@@ -187,7 +187,7 @@ function checkForm() {
     } else if (FORM_INPUT_NAME.length > 24) {
         NAME_ERROR.textContent = "Maximum Name Length is 24 Characters";
         return;
-    } else if (FORM_INPUT_NAME.length <= 3) {
+    } else if (FORM_INPUT_NAME.length < 3) {
         NAME_ERROR.textContent = "Minimum Name Length is 3 Characters";
         return;
     } else if (
