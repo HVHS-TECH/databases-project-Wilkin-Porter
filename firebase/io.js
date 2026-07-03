@@ -112,59 +112,6 @@ function fb_logout() {
 
 
 /*****************************************************************************************************/
-// fb_writeGeoDash() - async
-// _score: the score passed by the geoDash game
-// Called by: endGame() in geoDash/geoDash.js
-// Tries to get user details from session storage and checks if it exists, if not, displays not logged 
-// in error. Checks if _score doesn't exist. Waits for a firebase read from /geoDash/uid, if that data
-// doesn't exist, it reads the user's formName and saves their highscore to the database along with 
-// their formName for use in the high score list because their userData folder is not accessable to 
-// other users. If their data already exists in the database it only overwrites that existing data if
-// _score is higher than it, in which case it reads their formName and writes their data like above
-/*****************************************************************************************************/
-async function fb_writeGeoDash(_score) {
-    let localUserInformation = JSON.parse(sessionStorage.getItem("sessionUserInformation"));
-
-    if (localUserInformation == null) {
-        //console.log("User not logged in, not saving their score"); // In future update this could be displayed as text in the UI
-        return;
-    }
-    
-    if (!_score) {
-        console.error("fb_writeGeoDash input parameter/s doesn't exist");
-        return;
-    } 
-
-    const GEODASH_HIGH_SCORE_DATA = await firebase.database().ref("/geoDash/" + localUserInformation["uid"]).once('value');
-
-    if (GEODASH_HIGH_SCORE_DATA.val() == null) {
-        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
-
-        firebase.database().ref("/geoDash/" + localUserInformation["uid"]).update({
-            formName: FORM_NAME.val()["formName"],
-            highScore: _score
-        });
-
-        //console.log("Set this user's high score, it is now " + _score); // In future update this could be displayed as text in the UI
-        return;
-    }
-
-    if (_score > GEODASH_HIGH_SCORE_DATA.val()["highScore"]) {
-        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
-
-        firebase.database().ref("/geoDash/" + localUserInformation["uid"]).update({
-            formName: FORM_NAME.val()["formName"],
-            highScore: _score
-        });
-        
-        //console.log("Updated this user's high score, it is now " + _score); // In future update this could be displayed as text in the UI
-    } else {
-        //console.log("Didn't update this user's high score"); // In future update this could be displayed as text in the UI
-    }
-}
-
-
-/*****************************************************************************************************/
 // fb_writeVacuumingSimulator() - async
 // _timer: a numerical value of the total seconds used for calculations
 // _data: a string of mins and seconds that is displayed on the high score list, e.g "6m 12s"
@@ -217,6 +164,59 @@ async function fb_writeVacuumingSimulator(_timer, _data) {
         // console.log("Updated this user's time, it is now " + _data); // In future update this could be displayed as text in the UI
     } else {
         //console.log("Didn't update this user's time"); // In future update this could be displayed as text in the UI
+    }
+}
+
+
+/*****************************************************************************************************/
+// fb_writeGeoDash() - async
+// _score: the score passed by the geoDash game
+// Called by: endGame() in geoDash/geoDash.js
+// Tries to get user details from session storage and checks if it exists, if not, displays not logged 
+// in error. Checks if _score doesn't exist. Waits for a firebase read from /geoDash/uid, if that data
+// doesn't exist, it reads the user's formName and saves their highscore to the database along with 
+// their formName for use in the high score list because their userData folder is not accessable to 
+// other users. If their data already exists in the database it only overwrites that existing data if
+// _score is higher than it, in which case it reads their formName and writes their data like above
+/*****************************************************************************************************/
+async function fb_writeGeoDash(_score) {
+    let localUserInformation = JSON.parse(sessionStorage.getItem("sessionUserInformation"));
+
+    if (localUserInformation == null) {
+        //console.log("User not logged in, not saving their score"); // In future update this could be displayed as text in the UI
+        return;
+    }
+    
+    if (!_score) {
+        console.error("fb_writeGeoDash input parameter/s doesn't exist");
+        return;
+    } 
+
+    const GEODASH_HIGH_SCORE_DATA = await firebase.database().ref("/geoDash/" + localUserInformation["uid"]).once('value');
+
+    if (GEODASH_HIGH_SCORE_DATA.val() == null) {
+        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
+
+        firebase.database().ref("/geoDash/" + localUserInformation["uid"]).update({
+            formName: FORM_NAME.val()["formName"],
+            highScore: _score
+        });
+
+        //console.log("Set this user's high score, it is now " + _score); // In future update this could be displayed as text in the UI
+        return;
+    }
+
+    if (_score > GEODASH_HIGH_SCORE_DATA.val()["highScore"]) {
+        const FORM_NAME = await firebase.database().ref("/userData/" + localUserInformation["uid"]).once('value');
+
+        firebase.database().ref("/geoDash/" + localUserInformation["uid"]).update({
+            formName: FORM_NAME.val()["formName"],
+            highScore: _score
+        });
+        
+        //console.log("Updated this user's high score, it is now " + _score); // In future update this could be displayed as text in the UI
+    } else {
+        //console.log("Didn't update this user's high score"); // In future update this could be displayed as text in the UI
     }
 }
 

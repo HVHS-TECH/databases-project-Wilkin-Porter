@@ -26,8 +26,16 @@ let formInputAge;
 /*****************************************************************************************************/
 function initialiseIndex() {
     fb_authenticationListener();
-    firebase.database().ref("/vacuumingSimulator").orderByChild("comparisonTime").limitToFirst(VACUUMING_SIMULATOR_HIGH_SCORE_LIST_LENGTH).on('value', displayVacuumingSimulatorTimeInformation, fb_error);
-    firebase.database().ref("/geoDash").orderByChild("highScore").limitToLast(GEO_DASH_HIGH_SCORE_LIST_LENGTH).on('value', displayGeoDashHighscoreInformation, fb_error);
+    firebase.database()
+        .ref("/vacuumingSimulator")
+        .orderByChild("comparisonTime")
+        .limitToFirst(VACUUMING_SIMULATOR_HIGH_SCORE_LIST_LENGTH)
+        .on('value', displayVacuumingSimulatorTimeInformation, fb_error);
+    firebase.database()
+        .ref("/geoDash")
+        .orderByChild("highScore")
+        .limitToLast(GEO_DASH_HIGH_SCORE_LIST_LENGTH)
+        .on('value', displayGeoDashHighscoreInformation, fb_error);
 }
 
 
@@ -176,8 +184,11 @@ function checkForm() {
     if (FORM_INPUT_NAME == "") {
         NAME_ERROR.textContent = "Please Fill in This Field";
         return;
-    } else if (FORM_INPUT_NAME.length > 40) {
-        NAME_ERROR.textContent = "Please Input Text Shorter Than 40 Characters";
+    } else if (FORM_INPUT_NAME.length > 24) {
+        NAME_ERROR.textContent = "Maximum Name Length is 24 Characters";
+        return;
+    } else if (FORM_INPUT_NAME.length <= 3) {
+        NAME_ERROR.textContent = "Minimum Name Length is 3 Characters";
         return;
     } else if (
         FORM_INPUT_NAME.includes("<") || 
