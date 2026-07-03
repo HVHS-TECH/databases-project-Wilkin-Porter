@@ -67,7 +67,7 @@ function displayLoginInformation(_formName, _googleProfileURL) {
     }
     
     if (!_googleProfileURL) {
-        PROFILE_IMAGE.src = "../assets/unknownProfile.png";
+        PROFILE_IMAGE.src = "assets/unknownProfile.png";
     } else {
         PROFILE_IMAGE.src = _googleProfileURL;
     }
@@ -92,7 +92,7 @@ function removeLoginInformation() {
     }
 
     LOGIN_INFORMATION.innerHTML = 'Not Logged In';
-    PROFILE_IMAGE.src = "../assets/unknownProfile.png";
+    PROFILE_IMAGE.src = "assets/unknownProfile.png";
 }
 
 
